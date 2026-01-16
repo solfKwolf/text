@@ -9,7 +9,7 @@
     ></textarea>
     <div class="note-footer">
       <span class="note-date">{{ formatDate(note.updatedAt) }}</span>
-      <button class="note-delete" @click="handleDelete">
+      <button class="btn btn-danger btn-sm" @click="handleDelete">
         删除
       </button>
     </div>
@@ -132,20 +132,7 @@ function formatDate(timestamp) {
   color: #666;
 }
 
-.note-delete {
-  background-color: #f44336;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  padding: 4px 8px;
-  cursor: pointer;
-  font-size: 12px;
-  transition: background-color 0.2s ease;
-}
 
-.note-delete:hover {
-  background-color: #d32f2f;
-}
 
 .note-content::placeholder {
   color: #999;
