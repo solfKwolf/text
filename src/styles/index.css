@@ -1,0 +1,8 @@
+/* 导入样式变量 */
+@import './variables.css';
+
+/* 导入重置样式 */
+@import './reset.css';
+
+/* 导入公共样式 */
+@import './common.css';

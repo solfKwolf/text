@@ -115,7 +115,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted, computed } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue';
 import Note from './components/Note.vue';
 import {
   getAllNotes,
