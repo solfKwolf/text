@@ -1,6 +1,6 @@
 // IndexedDB数据库操作封装
 const DB_NAME = 'notesDB';
-const DB_VERSION = 1;
+const DB_VERSION = 2;
 const STORE_NAME = 'notes';
 
 // 打开数据库连接
@@ -54,8 +54,15 @@ export async function addNote(note) {
   return new Promise((resolve, reject) => {
     const transaction = db.transaction(STORE_NAME, 'readwrite');
     const store = transaction.objectStore(STORE_NAME);
+    // 默认样式值
+    const defaultStyle = {
+      color: '#fff9c4', // 默认黄色
+      fontSize: 16,      // 默认16px
+      theme: 'default'   // 默认主题
+    };
     const newNote = {
       ...note,
+      ...defaultStyle,
       createdAt: Date.now(),
       updatedAt: Date.now()
     };
@@ -72,7 +79,7 @@ export async function addNote(note) {
 }
 
 // 更新便签
-export async function updateNote(id, content) {
+export async function updateNote(id, updates) {
   const db = await openDB();
   return new Promise((resolve, reject) => {
     const transaction = db.transaction(STORE_NAME, 'readwrite');
@@ -82,11 +89,15 @@ export async function updateNote(id, content) {
     request.onsuccess = () => {
       const note = request.result;
       if (note) {
-        note.content = content;
-        note.updatedAt = Date.now();
-        const updateRequest = store.put(note);
+        // 合并更新，支持更新content、color、fontSize等字段
+        const updatedNote = {
+          ...note,
+          ...updates,
+          updatedAt: Date.now()
+        };
+        const updateRequest = store.put(updatedNote);
         updateRequest.onsuccess = () => {
-          resolve(note);
+          resolve(updatedNote);
         };
         updateRequest.onerror = () => {
           reject(updateRequest.error);
