@@ -25,6 +25,10 @@ export default [
         alert: 'readonly',
         confirm: 'readonly',
         console: 'readonly',
+        // 构建注入变量
+        __COMMIT_HASH__: 'readonly',
+        __COMMIT_DATE__: 'readonly',
+        __BUILD_TIME__: 'readonly',
         // 其他全局变量
         browser: true,
         node: true

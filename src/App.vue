@@ -111,6 +111,13 @@
         />
       </div>
     </main>
+    
+    <!-- 版本号信息 -->
+    <footer class="app-footer">
+      <p class="version-info">
+        版本: commit {{ commitHash }} | {{ formatDate(commitDate) }} | 构建于 {{ formatDate(buildTime) }}
+      </p>
+    </footer>
   </div>
 </template>
 
@@ -129,6 +136,11 @@ import {
   getBackupInfo
 } from './utils/db';
 
+// 版本号信息 - 从构建时注入
+const commitHash = __COMMIT_HASH__;
+const commitDate = __COMMIT_DATE__;
+const buildTime = __BUILD_TIME__;
+
 const notes = ref([]);
 const showDataMenu = ref(false);
 const backupInfo = ref(null);
@@ -144,6 +156,20 @@ const backupIntervals = [
   { value: 86400000, label: '24小时' }
 ];
 const showAutoBackupSettings = ref(false);
+
+// 格式化日期
+function formatDate(dateString) {
+  if (!dateString) return '未知';
+  const date = new Date(dateString);
+  return date.toLocaleString('zh-CN', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit'
+  });
+}
 
 // 初始化加载所有便签
 onMounted(async () => {
@@ -638,5 +664,21 @@ input:checked + .toggle-slider:before {
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 15px;
   }
+}
+
+/* 版本号样式 */
+.app-footer {
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 1px solid #e0e0e0;
+  text-align: center;
+  font-size: 12px;
+  color: #999;
+  padding-bottom: 20px;
+}
+
+.version-info {
+  margin: 0;
+  font-family: monospace;
 }
 </style>
