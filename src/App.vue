@@ -106,6 +106,7 @@
           v-for="note in notes"
           :key="note.id"
           :note="note"
+          :is-dark-mode="isDarkMode"
           @update:note="handleUpdateNote"
           @delete="handleDeleteNote"
         />
@@ -118,6 +119,12 @@
         版本: commit {{ commitHash }} | {{ formatDate(commitDate) }} | 构建于 {{ formatDate(buildTime) }}
       </p>
     </footer>
+    
+    <!-- 主题切换按钮 -->
+    <button class="theme-toggle-btn" @click="toggleTheme" :aria-label="isDarkMode ? '切换到正常模式' : '切换到夜间模式'">
+      <img src="/icons/sun.svg" alt="太阳图标" class="theme-icon" v-if="!isDarkMode" />
+      <img src="/icons/moon.svg" alt="月亮图标" class="theme-icon" v-else />
+    </button>
   </div>
 </template>
 
@@ -157,6 +164,27 @@ const backupIntervals = [
 ];
 const showAutoBackupSettings = ref(false);
 
+// 主题管理
+const isDarkMode = ref(false);
+
+// 切换主题
+function toggleTheme() {
+  isDarkMode.value = !isDarkMode.value;
+  // 保存主题设置到localStorage
+  localStorage.setItem('theme', isDarkMode.value ? 'dark' : 'light');
+  // 更新body类
+  updateBodyClass();
+}
+
+// 更新body类
+function updateBodyClass() {
+  if (isDarkMode.value) {
+    document.body.classList.add('dark-mode');
+  } else {
+    document.body.classList.remove('dark-mode');
+  }
+}
+
 // 格式化日期
 function formatDate(dateString) {
   if (!dateString) return '未知';
@@ -182,6 +210,13 @@ onMounted(async () => {
     
     // 启动自动备份
     setupAutoBackup();
+    
+    // 初始化主题
+    const savedTheme = localStorage.getItem('theme');
+    isDarkMode.value = savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    
+    // 更新body类
+    updateBodyClass();
     
     // 添加点击外部关闭菜单的事件监听
     document.addEventListener('click', handleClickOutside);
@@ -675,10 +710,42 @@ input:checked + .toggle-slider:before {
   font-size: 12px;
   color: #999;
   padding-bottom: 20px;
+  transition: all var(--transition-base);
 }
 
 .version-info {
   margin: 0;
   font-family: monospace;
+}
+
+/* 主题切换按钮样式 */
+.theme-toggle-btn {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-color: var(--primary-color);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+  transition: all var(--transition-base);
+  z-index: 1000;
+}
+
+.theme-toggle-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.theme-icon {
+  width: 24px;
+  height: 24px;
+  color: white;
+  transition: all var(--transition-base);
 }
 </style>

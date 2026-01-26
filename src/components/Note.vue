@@ -75,6 +75,10 @@ const props = defineProps({
   note: {
     type: Object,
     required: true
+  },
+  isDarkMode: {
+    type: Boolean,
+    default: false
   }
 });
 
@@ -117,7 +121,7 @@ let debounceTimer = null;
 // 动态样式计算
 const noteStyle = computed(() => {
   return {
-    backgroundColor: props.note.color,
+    backgroundColor: props.isDarkMode ? '#3d3d3d' : props.note.color,
     fontSize: `${props.note.fontSize}px`
   };
 });
@@ -234,7 +238,7 @@ function formatDate(timestamp) {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.3s ease;
   position: relative;
 }
 
@@ -251,8 +255,8 @@ function formatDate(timestamp) {
   line-height: 1.5;
   outline: none;
   font-family: inherit;
-  color: #333;
-  transition: font-size 0.2s ease;
+  color: var(--text-primary);
+  transition: font-size 0.2s ease, color 0.3s ease;
 }
 
 .note-footer {
@@ -262,6 +266,7 @@ function formatDate(timestamp) {
   align-items: center;
   font-size: 12px;
   color: #666;
+  transition: color 0.3s ease;
 }
 
 .note-actions {
@@ -272,6 +277,7 @@ function formatDate(timestamp) {
 .note-date {
   font-size: 11px;
   color: #888;
+  transition: color 0.3s ease;
 }
 
 /* 样式面板 */
@@ -282,6 +288,7 @@ function formatDate(timestamp) {
   border-radius: 6px;
   border: 1px solid #e0e0e0;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
 }
 
 .style-section {
@@ -298,6 +305,7 @@ function formatDate(timestamp) {
   font-size: 12px;
   font-weight: 500;
   color: #555;
+  transition: color 0.3s ease;
 }
 
 /* 颜色选择器 */
@@ -349,6 +357,7 @@ function formatDate(timestamp) {
   border-radius: 3px;
   outline: none;
   -webkit-appearance: none;
+  transition: background-color 0.3s ease;
 }
 
 .font-size-slider::-webkit-slider-thumb {
@@ -392,6 +401,7 @@ function formatDate(timestamp) {
   background-color: white;
   cursor: pointer;
   outline: none;
+  transition: all 0.3s ease;
 }
 
 .theme-select:hover {
@@ -435,5 +445,96 @@ function formatDate(timestamp) {
 .note-content::placeholder {
   color: #999;
   font-style: italic;
+  transition: color 0.3s ease;
+}
+
+/* 暗色模式样式 */
+:deep(.dark-mode) .note {
+  border-color: #444;
+  background-color: #3d3d3d;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+:deep(.dark-mode) .note:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+}
+
+:deep(.dark-mode) .note-content {
+  color: #fff;
+}
+
+:deep(.dark-mode) .note-content::placeholder {
+  color: #888;
+}
+
+:deep(.dark-mode) .note-footer {
+  color: #aaa;
+}
+
+:deep(.dark-mode) .note-date {
+  color: #888;
+}
+
+:deep(.dark-mode) .style-panel {
+  background-color: rgba(51, 51, 51, 0.8);
+  border-color: #555;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+:deep(.dark-mode) .style-section label {
+  color: #ddd;
+}
+
+:deep(.dark-mode) .color-option {
+  border-color: #555;
+}
+
+:deep(.dark-mode) .color-option:hover {
+  border-color: #fff;
+}
+
+:deep(.dark-mode) .custom-color {
+  border-color: #555;
+}
+
+:deep(.dark-mode) .font-size-slider {
+  background: #555;
+}
+
+:deep(.dark-mode) .theme-select {
+  background-color: #444;
+  color: #ddd;
+  border-color: #555;
+}
+
+:deep(.dark-mode) .theme-select:hover {
+  border-color: #66b1ff;
+}
+
+:deep(.dark-mode) .theme-select:focus {
+  border-color: #66b1ff;
+  box-shadow: 0 0 0 2px rgba(102, 177, 255, 0.2);
+}
+
+:deep(.dark-mode) .btn {
+  background-color: #444;
+  color: #ddd;
+  border-color: #555;
+}
+
+:deep(.dark-mode) .btn:hover {
+  background-color: #555;
+  border-color: #666;
+}
+
+:deep(.dark-mode) .btn-danger {
+  background-color: #f56c6c;
+  color: white;
+  border-color: #f56c6c;
+}
+
+:deep(.dark-mode) .btn-danger:hover {
+  background-color: #f78989;
+  border-color: #f78989;
 }
 </style>
