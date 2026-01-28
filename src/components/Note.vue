@@ -3,7 +3,7 @@
     <textarea
       v-model="localContent"
       class="note-content"
-      placeholder="输入便签内容..."
+      :placeholder="$t('note.content')"
       @input="handleInput"
       @blur="handleBlur"
     ></textarea>
@@ -11,10 +11,10 @@
       <span class="note-date">{{ formatDate(note.updatedAt) }}</span>
       <div class="note-actions">
         <button class="btn btn-sm" @click="showStylePanel = !showStylePanel">
-          样式
+          {{ $t('app.style') }}
         </button>
         <button class="btn btn-danger btn-sm" @click="handleDelete">
-          删除
+          {{ $t('note.delete') }}
         </button>
       </div>
     </div>
@@ -22,7 +22,7 @@
     <div class="style-panel" v-if="showStylePanel">
       <!-- 颜色选择器 -->
       <div class="style-section">
-        <label>背景颜色:</label>
+        <label>{{ $t('note.color') }}:</label>
         <div class="color-picker">
           <div
             v-for="color in presetColors"
@@ -41,7 +41,7 @@
       </div>
       <!-- 字体大小调整 -->
       <div class="style-section">
-        <label>字体大小: {{ localFontSize }}px</label>
+        <label>{{ $t('note.fontSize') }}: {{ localFontSize }}px</label>
         <input
           type="range"
           min="12"
@@ -54,7 +54,7 @@
       </div>
       <!-- 主题选择 -->
       <div class="style-section">
-        <label>主题:</label>
+        <label>{{ $t('note.theme') }}:</label>
         <select v-model="localTheme" @change="changeTheme" class="theme-select">
           <option value="default">默认</option>
           <option value="blue">蓝色</option>
@@ -69,7 +69,11 @@
 
 <script setup>
 import { ref, computed, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { updateNote, deleteNote } from '../utils/db';
+
+// 初始化i18n
+useI18n();
 
 const props = defineProps({
   note: {

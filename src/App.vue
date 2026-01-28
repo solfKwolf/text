@@ -1,11 +1,35 @@
 <template>
   <div class="app">
+    <!-- 语言切换下拉按钮 -->
+    <div class="language-dropdown" ref="languageDropdownRef">
+      <button class="lang-dropdown-btn" @click="showLanguageDropdown = !showLanguageDropdown">
+        {{ currentLanguage === 'zh-CN' ? $t('language.zh') : $t('language.en') }}
+        <span class="dropdown-arrow" :class="{ rotated: showLanguageDropdown }"></span>
+      </button>
+      <div class="lang-dropdown-menu" v-if="showLanguageDropdown">
+        <button 
+          class="lang-dropdown-item" 
+          @click="switchLanguage('zh-CN')"
+          :class="{ active: currentLanguage === 'zh-CN' }"
+        >
+          {{ $t('language.zh') }}
+        </button>
+        <button 
+          class="lang-dropdown-item" 
+          @click="switchLanguage('en-US')"
+          :class="{ active: currentLanguage === 'en-US' }"
+        >
+          {{ $t('language.en') }}
+        </button>
+      </div>
+    </div>
+    
     <header class="app-header">
-      <h1>在线便签 - 免费便捷的在线笔记工具</h1>
+      <h1>{{ $t('app.title') }} - {{ $t('app.title') }}免费便捷的在线笔记工具</h1>
       <p class="app-description">支持快速创建、编辑和管理便签，数据本地存储，安全可靠</p>
       <div class="header-actions">
         <button class="btn btn-primary" @click="addNewNote">
-          添加便签
+          {{ $t('app.addNote') }}
         </button>
         <div class="data-menu" ref="dataMenuRef">
           <button class="btn btn-secondary" @click="showDataMenu = !showDataMenu">
@@ -91,15 +115,14 @@
     
     <main class="app-main">
       <div v-if="notes.length === 0" class="empty-state">
-        <h2>开始使用在线便签</h2>
-        <p>在线便签是一款免费、便捷的在线笔记工具，支持：</p>
+        <h2>{{ $t('app.title') }}</h2>
+        <p>{{ $t('app.title') }}{{ $t('app.description') }}</p>
         <ul>
-          <li>快速创建和编辑便签</li>
-          <li>数据本地存储，安全可靠</li>
-          <li>响应式设计，适配各种设备</li>
-          <li>简洁美观的界面</li>
+          <li v-for="(feature, index) in $tm('app.features')" :key="index">
+            {{ feature }}
+          </li>
         </ul>
-        <p>点击上方"添加便签"按钮开始创建您的第一个便签吧！</p>
+        <p>{{ $t('app.title') }}{{ $t('app.emptyState.startUsing') }}</p>
       </div>
       <div class="notes-grid" v-else>
         <Note
@@ -116,12 +139,12 @@
     <!-- 版本号信息 -->
     <footer class="app-footer">
       <p class="version-info">
-        版本: commit {{ commitHash }} | {{ formatDate(commitDate) }} | 构建于 {{ formatDate(buildTime) }}
+        {{ $t('footer.version') }}: commit {{ commitHash }} | {{ formatDate(commitDate) }} | {{ $t('footer.version') }}于 {{ formatDate(buildTime) }}
       </p>
     </footer>
     
     <!-- 主题切换按钮 -->
-    <button class="theme-toggle-btn" @click="toggleTheme" :aria-label="isDarkMode ? '切换到正常模式' : '切换到夜间模式'">
+    <button class="theme-toggle-btn" @click="toggleTheme" :aria-label="isDarkMode ? $t('theme.light') : $t('theme.dark')">
       <img src="/icons/sun.svg" alt="太阳图标" class="theme-icon" v-if="!isDarkMode" />
       <img src="/icons/moon.svg" alt="月亮图标" class="theme-icon" v-else />
     </button>
@@ -129,7 +152,8 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref, onMounted, onUnmounted, computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 import Note from './components/Note.vue';
 import {
   getAllNotes,
@@ -163,6 +187,14 @@ const backupIntervals = [
   { value: 86400000, label: '24小时' }
 ];
 const showAutoBackupSettings = ref(false);
+
+// i18n 实例
+const { locale } = useI18n();
+const currentLanguage = computed(() => locale.value);
+
+// 语言下拉菜单
+const showLanguageDropdown = ref(false);
+const languageDropdownRef = ref(null);
 
 // 主题管理
 const isDarkMode = ref(false);
@@ -199,6 +231,13 @@ function formatDate(dateString) {
   });
 }
 
+// 切换语言
+function switchLanguage(lang) {
+  locale.value = lang;
+  localStorage.setItem('language', lang);
+  showLanguageDropdown.value = false;
+}
+
 // 初始化加载所有便签
 onMounted(async () => {
   try {
@@ -214,6 +253,12 @@ onMounted(async () => {
     // 初始化主题
     const savedTheme = localStorage.getItem('theme');
     isDarkMode.value = savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    
+    // 初始化语言
+    const savedLanguage = localStorage.getItem('language');
+    if (savedLanguage) {
+      locale.value = savedLanguage;
+    }
     
     // 更新body类
     updateBodyClass();
@@ -266,6 +311,9 @@ function toggleAutoBackupSettings() {
 function handleClickOutside(event) {
   if (showDataMenu.value && dataMenuRef.value && !dataMenuRef.value.contains(event.target)) {
     showDataMenu.value = false;
+  }
+  if (showLanguageDropdown.value && languageDropdownRef.value && !languageDropdownRef.value.contains(event.target)) {
+    showLanguageDropdown.value = false;
   }
 }
 
@@ -416,6 +464,130 @@ function handleDeleteNote(noteId) {
   gap: 10px;
   align-items: center;
   margin-top: 10px;
+}
+
+/* 语言下拉菜单样式 */
+.language-dropdown {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+}
+
+.lang-dropdown-btn {
+  padding: 8px 16px;
+  border: 1px solid #ddd;
+  background-color: white;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 80px;
+  justify-content: space-between;
+}
+
+.lang-dropdown-btn:hover {
+  background-color: #f5f5f5;
+  border-color: #ccc;
+}
+
+.dropdown-arrow {
+  width: 0;
+  height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 5px solid #666;
+  transition: transform 0.2s ease;
+}
+
+.dropdown-arrow.rotated {
+  transform: rotate(180deg);
+}
+
+.lang-dropdown-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  min-width: 100%;
+  margin-top: 4px;
+  overflow: hidden;
+  animation: dropdownFadeIn 0.2s ease;
+}
+
+.lang-dropdown-item {
+  display: block;
+  width: 100%;
+  padding: 8px 16px;
+  text-align: left;
+  border: none;
+  background: none;
+  font-size: 14px;
+  color: #333;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.lang-dropdown-item:hover {
+  background-color: #f5f5f5;
+}
+
+.lang-dropdown-item.active {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+/* 动画效果 */
+@keyframes dropdownFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 暗色模式下的语言下拉菜单样式 */
+:deep(.dark-mode) .lang-dropdown-btn {
+  background-color: #444;
+  color: #ddd;
+  border-color: #555;
+}
+
+:deep(.dark-mode) .lang-dropdown-btn:hover {
+  background-color: #555;
+  border-color: #666;
+}
+
+:deep(.dark-mode) .dropdown-arrow {
+  border-top-color: #ddd;
+}
+
+:deep(.dark-mode) .lang-dropdown-menu {
+  background-color: #444;
+  border-color: #555;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+:deep(.dark-mode) .lang-dropdown-item {
+  color: #ddd;
+}
+
+:deep(.dark-mode) .lang-dropdown-item:hover {
+  background-color: #555;
+}
+
+:deep(.dark-mode) .lang-dropdown-item.active {
+  background-color: var(--primary-color);
+  color: white;
 }
 
 .data-menu {
