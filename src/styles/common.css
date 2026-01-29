@@ -1,4 +1,30 @@
 /* 公共布局样式 */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+  transition: background-color var(--transition-base), color var(--transition-base);
+}
+
+body.dark-mode {
+  background-color: var(--dark-bg-color);
+  color: var(--dark-text-primary);
+}
+
+.app {
+  min-height: 100vh;
+  background-color: var(--bg-color);
+  transition: background-color var(--transition-base);
+}
+
+body.dark-mode .app {
+  min-height: 100vh;
+  background-color: var(--dark-bg-color);
+}
+
 .container {
   max-width: 1200px;
   margin: 0 auto;
@@ -354,16 +380,7 @@
   }
 }
 
-/* 暗色模式样式 */
-body.dark-mode {
-  background-color: var(--dark-bg-color);
-  color: var(--dark-text-primary);
-}
 
-body.dark-mode .app {
-  background-color: var(--dark-bg-color);
-  color: var(--dark-text-primary);
-}
 
 /* 夜间模式下的便签文本颜色 */
 body.dark-mode .note-content {

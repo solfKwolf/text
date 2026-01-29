@@ -25,22 +25,22 @@
     </div>
     
     <header class="app-header">
-      <h1>{{ $t('app.title') }} - {{ $t('app.title') }}免费便捷的在线笔记工具</h1>
-      <p class="app-description">支持快速创建、编辑和管理便签，数据本地存储，安全可靠</p>
+      <h1>{{ $t('app.title') }} - {{ $t('app.subtitle') }}</h1>
+      <p class="app-description">{{ $t('app.headerDescription') }}</p>
       <div class="header-actions">
         <button class="btn btn-primary" @click="addNewNote">
           {{ $t('app.addNote') }}
         </button>
         <div class="data-menu" ref="dataMenuRef">
           <button class="btn btn-secondary" @click="showDataMenu = !showDataMenu">
-            数据管理
+            {{ $t('data.management') }}
           </button>
           <div class="data-menu-dropdown" v-if="showDataMenu">
             <button class="menu-item" @click="handleExport">
-              导出数据 (JSON)
+              {{ $t('data.export') }}
             </button>
             <label class="menu-item file-input-label">
-              导入数据 (JSON)
+              {{ $t('data.import') }}
               <input 
                 type="file" 
                 accept=".json" 
@@ -49,19 +49,19 @@
               >
             </label>
             <button class="menu-item" @click="handleBackup">
-              手动备份
+              {{ $t('backup.manual') }}
             </button>
             <button class="menu-item" @click="handleRestore" :disabled="!hasBackupData()">
-              从备份恢复
+              {{ $t('backup.restore') }}
             </button>
             <div class="menu-divider"></div>
             <div class="menu-divider"></div>
             <button class="menu-item" @click="toggleAutoBackupSettings">
-              自动备份设置
+              {{ $t('backup.autoSettings') }}
             </button>
             <div class="auto-backup-settings" v-if="showAutoBackupSettings">
               <div class="setting-item">
-                <span class="setting-label">自动备份:</span>
+                <span class="setting-label">{{ $t('backup.autoBackup') }}</span>
                 <label class="toggle-switch">
                   <input 
                     type="checkbox" 
@@ -72,7 +72,7 @@
                 </label>
               </div>
               <div class="setting-item" :disabled="!autoBackupEnabled">
-                <span class="setting-label">备份间隔:</span>
+                <span class="setting-label">{{ $t('backup.interval') }}</span>
                 <select 
                   v-model="backupInterval" 
                   @change="handleBackupIntervalChange" 
@@ -90,23 +90,23 @@
               </div>
               <div class="setting-status">
                 <span class="status-text">
-                  {{ autoBackupEnabled ? '自动备份已开启' : '自动备份已关闭' }}
+                  {{ autoBackupEnabled ? $t('backup.enabled') : $t('backup.disabled') }}
                 </span>
               </div>
             </div>
             <div class="menu-divider"></div>
             <div class="menu-info" v-if="backupInfo">
               <div class="info-item">
-                <span class="info-label">最近备份:</span>
+                <span class="info-label">{{ $t('backup.recent') }}</span>
                 <span class="info-value">{{ formatBackupTime(backupInfo.timestamp) }}</span>
               </div>
               <div class="info-item">
-                <span class="info-label">备份数量:</span>
-                <span class="info-value">{{ backupInfo.noteCount }} 个便签</span>
+                <span class="info-label">{{ $t('backup.count') }}</span>
+                <span class="info-value">{{ backupInfo.noteCount }} {{ $t('backup.unit') }}</span>
               </div>
             </div>
             <div class="menu-info" v-else>
-              <span>暂无备份数据</span>
+              <span>{{ $t('backup.empty') }}</span>
             </div>
           </div>
         </div>
@@ -116,13 +116,13 @@
     <main class="app-main">
       <div v-if="notes.length === 0" class="empty-state">
         <h2>{{ $t('app.title') }}</h2>
-        <p>{{ $t('app.title') }}{{ $t('app.description') }}</p>
+        <p>{{ $t('app.title') }} {{ $t('app.description') }}</p>
         <ul>
           <li v-for="(feature, index) in $tm('app.features')" :key="index">
             {{ feature }}
           </li>
         </ul>
-        <p>{{ $t('app.title') }}{{ $t('app.emptyState.startUsing') }}</p>
+        <p>{{ $t('app.title') }} {{ $t('app.emptyState.startUsing') }}</p>
       </div>
       <div class="notes-grid" v-else>
         <Note
@@ -429,7 +429,10 @@ function handleDeleteNote(noteId) {
 
 <style scoped>
 .app {
+  box-sizing: border-box;
   max-width: 1200px;
+  height: 100%;
+  overflow-y: auto;
   margin: 0 auto;
   padding: 20px;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
@@ -556,36 +559,36 @@ function handleDeleteNote(noteId) {
 }
 
 /* 暗色模式下的语言下拉菜单样式 */
-:deep(.dark-mode) .lang-dropdown-btn {
+.dark-mode .lang-dropdown-btn {
   background-color: #444;
   color: #ddd;
   border-color: #555;
 }
 
-:deep(.dark-mode) .lang-dropdown-btn:hover {
+.dark-mode .lang-dropdown-btn:hover {
   background-color: #555;
   border-color: #666;
 }
 
-:deep(.dark-mode) .dropdown-arrow {
+.dark-mode .dropdown-arrow {
   border-top-color: #ddd;
 }
 
-:deep(.dark-mode) .lang-dropdown-menu {
+.dark-mode .lang-dropdown-menu {
   background-color: #444;
   border-color: #555;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
-:deep(.dark-mode) .lang-dropdown-item {
+.dark-mode .lang-dropdown-item {
   color: #ddd;
 }
 
-:deep(.dark-mode) .lang-dropdown-item:hover {
+.dark-mode .lang-dropdown-item:hover {
   background-color: #555;
 }
 
-:deep(.dark-mode) .lang-dropdown-item.active {
+.dark-mode .lang-dropdown-item.active {
   background-color: var(--primary-color);
   color: white;
 }

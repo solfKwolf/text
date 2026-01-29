@@ -67,8 +67,9 @@ export async function addNote(note) {
       updatedAt: Date.now()
     };
     const request = store.add(newNote);
-
     request.onsuccess = () => {
+      // 添加由IndexedDB自动生成的id到返回对象
+      newNote.id = request.result;
       resolve(newNote);
     };
 

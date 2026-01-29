@@ -3,6 +3,8 @@ export default {
     title: '在线便签',
     style: '样式',
     addNote: '添加便签',
+    subtitle: '免费便捷的在线笔记工具',
+    headerDescription: '支持快速创建、编辑和管理便签，数据本地存储，安全可靠',
     description: '是一款免费、便捷的在线笔记工具，支持：',
     features: [
       '快速创建和编辑便签',
@@ -34,5 +36,23 @@ export default {
   language: {
     zh: '中文',
     en: 'English'
+  },
+  data: {
+    management: '数据管理',
+    export: '导出数据 (JSON)',
+    import: '导入数据 (JSON)'
+  },
+  backup: {
+    manual: '手动备份',
+    restore: '从备份恢复',
+    autoSettings: '自动备份设置',
+    autoBackup: '自动备份:',
+    interval: '备份间隔:',
+    enabled: '自动备份已开启',
+    disabled: '自动备份已关闭',
+    recent: '最近备份:',
+    count: '备份数量:',
+    unit: '个便签',
+    empty: '暂无备份数据'
   }
 };

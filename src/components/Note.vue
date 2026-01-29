@@ -210,6 +210,7 @@ function changeTheme() {
 
 // 删除便签
 function handleDelete() {
+  console.log('删除便签:', props.note.id);
   deleteNote(props.note.id)
     .then(() => {
       emit('delete', props.note.id);
