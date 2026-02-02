@@ -139,7 +139,7 @@
     <!-- 版本号信息 -->
     <footer class="app-footer">
       <p class="version-info">
-        {{ $t('footer.version') }}: commit {{ commitHash }} | {{ formatDate(commitDate) }} | {{ $t('footer.version') }}于 {{ formatDate(buildTime) }}
+        {{ $t('footer.version') }}: commit {{ commitHash }} | {{ formatDate(commitDate) }} | {{ $t('footer.version') }}: {{ formatDate(buildTime) }}
       </p>
     </footer>
     
@@ -148,6 +148,13 @@
       <img src="/icons/sun.svg" alt="太阳图标" class="theme-icon" v-if="!isDarkMode" />
       <img src="/icons/moon.svg" alt="月亮图标" class="theme-icon" v-else />
     </button>
+    
+    <!-- PWA 安装提示 -->
+    <PwaInstallPrompt
+      :is-dark-mode="isDarkMode"
+      @install-success="handlePwaInstallSuccess"
+      @install-error="handlePwaInstallError"
+    />
   </div>
 </template>
 
@@ -155,6 +162,7 @@
 import { ref, onMounted, onUnmounted, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Note from './components/Note.vue';
+import PwaInstallPrompt from './components/PwaInstallPrompt.vue';
 import {
   getAllNotes,
   addNote,
@@ -424,6 +432,18 @@ function handleUpdateNote(updatedNote) {
 // 处理便签删除
 function handleDeleteNote(noteId) {
   notes.value = notes.value.filter(note => note.id !== noteId);
+}
+
+// 处理 PWA 安装成功
+function handlePwaInstallSuccess() {
+  console.log('PWA 安装成功');
+  // 可以添加安装成功的提示或其他逻辑
+}
+
+// 处理 PWA 安装失败
+function handlePwaInstallError() {
+  console.log('PWA 安装失败');
+  // 可以添加安装失败的提示或其他逻辑
 }
 </script>
 

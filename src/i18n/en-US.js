@@ -48,11 +48,19 @@ export default {
     autoSettings: 'Auto Backup Settings',
     autoBackup: 'Auto Backup:',
     interval: 'Backup Interval:',
-    enabled: 'Auto backup enabled',
-    disabled: 'Auto backup disabled',
+    enabled: 'Auto Backup Enabled',
+    disabled: 'Auto Backup Disabled',
     recent: 'Recent Backup:',
     count: 'Backup Count:',
     unit: 'notes',
-    empty: 'No backup data'
+    empty: 'No backup data available'
+  },
+  pwa: {
+    install: {
+      title: 'Install Note App',
+      message: 'Add Note App to your home screen for a better experience',
+      now: 'Install Now',
+      later: 'Maybe Later'
+    }
   }
 };

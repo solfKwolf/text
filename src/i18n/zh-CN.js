@@ -30,9 +30,6 @@ export default {
     light: '浅色模式',
     dark: '深色模式'
   },
-  footer: {
-    version: '版本'
-  },
   language: {
     zh: '中文',
     en: 'English'
@@ -54,5 +51,16 @@ export default {
     count: '备份数量:',
     unit: '个便签',
     empty: '暂无备份数据'
+  },
+  pwa: {
+    install: {
+      title: '安装在线便签',
+      message: '将在线便签添加到您的设备主屏幕，获得更流畅的使用体验',
+      now: '立即安装',
+      later: '稍后再说'
+    }
+  },
+  footer: {
+    version: '版本'
   }
 };
