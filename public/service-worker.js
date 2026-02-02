@@ -3,15 +3,15 @@ const CACHE_NAME = 'note-app-v1';
 
 // 需要缓存的资源列表
 const STATIC_CACHE_URLS = [
-  '/',
-  '/index.html',
-  '/manifest.json',
-  '/favicon.svg',
-  '/icons/manifest-icon-192.maskable.png',
-  '/icons/manifest-icon-512.maskable.png',
-  '/icons/apple-icon-180.png',
-  '/icons/moon.svg',
-  '/icons/sun.svg'
+  './',
+  './index.html',
+  './manifest.json',
+  './favicon.svg',
+  './icons/manifest-icon-192.maskable.png',
+  './icons/manifest-icon-512.maskable.png',
+  './icons/apple-icon-180.png',
+  './icons/moon.svg',
+  './icons/sun.svg'
 ];
 
 // 安装事件 - 缓存初始资源

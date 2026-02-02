@@ -139,7 +139,7 @@
     <!-- 版本号信息 -->
     <footer class="app-footer">
       <p class="version-info">
-        {{ $t('footer.version') }}: commit {{ commitHash }} | {{ formatDate(commitDate) }} | {{ $t('footer.version') }}: {{ formatDate(buildTime) }}
+        {{ $t('footer.version') }}: commit {{ commitHash }} | {{ formatDate(commitDate) }} | {{ $t('footer.version') }} {{ formatDate(buildTime) }}
       </p>
     </footer>
     
