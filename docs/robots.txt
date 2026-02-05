@@ -1,0 +1,9 @@
+# robots.txt for 在线便签
+User-agent: *
+Allow: /
+
+# 允许搜索引擎爬取所有页面
+Allow: /
+
+# 指向站点地图
+Sitemap: https://solfkwolf.github.io/text/sitemap.xml
