@@ -16,9 +16,6 @@
           {{ $t('pwa.install.now') }}
         </button>
       </div>
-      <button class="pwa-close-btn" @click="dismissPrompt" aria-label="关闭">
-        &times;
-      </button>
     </div>
   </div>
 </template>
@@ -210,29 +207,6 @@ onUnmounted(() => {
   gap: 8px;
 }
 
-.pwa-close-btn {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  width: 24px;
-  height: 24px;
-  border: none;
-  background: none;
-  font-size: 20px;
-  color: #999;
-  cursor: pointer;
-  border-radius: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s ease;
-}
-
-.pwa-close-btn:hover {
-  background-color: #f5f5f5;
-  color: #333;
-}
-
 /* 暗色模式样式 */
 .pwa-install-prompt.dark-mode {
   background-color: #333;
@@ -250,15 +224,6 @@ onUnmounted(() => {
 
 .pwa-install-prompt.dark-mode .pwa-message p {
   color: #ddd;
-}
-
-.pwa-install-prompt.dark-mode .pwa-close-btn {
-  color: #777;
-}
-
-.pwa-install-prompt.dark-mode .pwa-close-btn:hover {
-  background-color: #444;
-  color: #fff;
 }
 
 /* 动画效果 */
