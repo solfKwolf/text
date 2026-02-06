@@ -41,7 +41,7 @@
 
 ```
 ├── public/             # 静态资源目录
-│   ├── favicon.svg     # 网站图标
+│   ├── favicon.ico     # 网站图标
 │   ├── icons/          # PWA 图标目录
 │   └── vite.svg        # Vite 图标
 ├── src/                # 源代码目录

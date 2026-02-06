@@ -20,7 +20,7 @@ export default defineConfig({
     vue(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['favicon.svg', 'icons/*.svg', 'icons/*.png'],
+      includeAssets: ['favicon.ico', 'icons/*.svg', 'icons/*.png'],
       manifest: {
         name: '在线便签',
         short_name: '便签',
@@ -43,9 +43,9 @@ export default defineConfig({
             purpose: 'any maskable'
           },
           {
-            src: 'favicon.svg',
+            src: 'favicon.ico',
             sizes: '32x32',
-            type: 'image/svg+xml',
+            type: 'image/ico',
             purpose: 'any'
           },
           {
@@ -63,7 +63,7 @@ export default defineConfig({
             url: '?action=new',
             icons: [
               {
-                src: 'favicon.svg',
+                src: 'favicon.ico',
                 sizes: '192x192'
               }
             ]
