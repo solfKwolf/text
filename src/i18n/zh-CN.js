@@ -24,7 +24,9 @@ export default {
     theme: '主题',
     save: '保存',
     cancel: '取消',
-    delete: '删除'
+    delete: '删除',
+    fullscreen: '全屏',
+    exitFullscreen: '退出全屏'
   },
   theme: {
     light: '浅色模式',

@@ -24,7 +24,9 @@ export default {
     theme: 'Theme',
     save: 'Save',
     cancel: 'Cancel',
-    delete: 'Delete'
+    delete: 'Delete',
+    fullscreen: 'Fullscreen',
+    exitFullscreen: 'Exit Fullscreen'
   },
   theme: {
     light: 'Light Mode',

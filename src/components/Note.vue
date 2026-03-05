@@ -1,5 +1,11 @@
 <template>
-  <div class="note" :style="noteStyle">
+  <div class="note" :style="noteStyle" :class="{ 'fullscreen': isFullscreen }">
+    <div class="note-header">
+      <button class="btn btn-sm zoom-btn" @click="toggleFullscreen" :title="isFullscreen ? $t('note.exitFullscreen') : $t('note.fullscreen')">
+        <img v-if="!isFullscreen" src="/icons/fullscreen-icon.svg" :alt="$t('note.fullscreen')" class="zoom-icon" />
+        <img v-else src="/icons/exit-fullscreen-icon.svg" :alt="$t('note.exitFullscreen')" class="zoom-icon" />
+      </button>
+    </div>
     <textarea
       v-model="localContent"
       class="note-content"
@@ -92,6 +98,8 @@ const emit = defineEmits(['update:note', 'delete']);
 const localContent = ref(props.note.content);
 // 样式面板显示状态
 const showStylePanel = ref(false);
+// 全屏状态
+const isFullscreen = ref(false);
 // 本地样式状态
 const localColor = ref(props.note.color);
 const localFontSize = ref(props.note.fontSize);
@@ -220,6 +228,11 @@ function handleDelete() {
     });
 }
 
+// 切换全屏
+function toggleFullscreen() {
+  isFullscreen.value = !isFullscreen.value;
+}
+
 // 格式化日期
 function formatDate(timestamp) {
   const date = new Date(timestamp);
@@ -245,6 +258,75 @@ function formatDate(timestamp) {
   flex-direction: column;
   transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.3s ease;
   position: relative;
+  z-index: 1;
+}
+
+/* 便签头部 */
+.note-header {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 2;
+}
+
+/* 放大按钮 */
+.zoom-btn {
+  width: 28px;
+  height: 28px;
+  min-width: unset;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(255, 255, 255, 0.9);
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.zoom-btn:hover {
+  background-color: rgba(255, 255, 255, 1);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+  transform: translateY(-1px);
+}
+
+.zoom-icon {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+
+/* 调整 textarea 边距 */
+.note-content {
+  margin-top: 8px;
+}
+
+/* 全屏模式 */
+.note.fullscreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  min-height: 100vh;
+  padding: 40px;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  z-index: 1000;
+  font-size: 18px;
+}
+
+.note.fullscreen .note-content {
+  font-size: 18px;
+  line-height: 1.6;
+}
+
+.note.fullscreen .style-panel {
+  max-width: 500px;
+  margin: 20px auto 0;
 }
 
 .note:hover {
@@ -541,5 +623,28 @@ function formatDate(timestamp) {
 :deep(.dark-mode) .btn-danger:hover {
   background-color: #f78989;
   border-color: #f78989;
+}
+
+/* 暗色模式下的放大按钮 */
+:deep(.dark-mode) .zoom-btn {
+  background-color: rgba(68, 68, 68, 0.9);
+  border-color: #555;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  border-radius: 4px;
+}
+
+:deep(.dark-mode) .zoom-btn:hover {
+  background-color: rgba(85, 85, 85, 1);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
+  transform: translateY(-1px);
+}
+
+/* 暗色模式下的全屏模式 */
+:deep(.dark-mode) .note.fullscreen {
+  background-color: #3d3d3d;
+}
+
+:deep(.dark-mode) .note.fullscreen .style-panel {
+  background-color: rgba(51, 51, 51, 0.9);
 }
 </style>
